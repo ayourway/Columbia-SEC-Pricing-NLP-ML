@@ -11,6 +11,11 @@
     - Qing Ma <qm2124@columbia.edu>,
     - Jun Guo <jg3555@columbia.edu>.
 
+### Update Feb. 23 2018
+    To execute the executor.py, which scrapes SEC files using information from data/edgar.csv and converts the 10-K/10-Q documents into sentiment vectors:
+    
+    python executor.py 
+
 ### Thanks for the help from our professors Dr. Eugene Wu and Dr. Sambit Sahu.
 
 ### The original repository is here: [CYUlysses/W4121_SECNLP](https://github.com/CYUlysses/W4121_SECNLP)
