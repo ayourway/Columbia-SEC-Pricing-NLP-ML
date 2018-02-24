@@ -196,8 +196,8 @@ if __name__=="__main__":
         beg = 0
         end = len(edgar)
     else:
-        beg = sys.argv[1]
-        end = sys.argv[2]
+        beg = int(sys.argv[1])
+        end = int(sys.argv[2])
         if int(sys.argv[2]) > len(edgar) or int(sys.argv[1]) > len(edgar):
             print('[WARNING] Maximum Input Value is {}'.format(len(edgar)))
     main(beg, end)
