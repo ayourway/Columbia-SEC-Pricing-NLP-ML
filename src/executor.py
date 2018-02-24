@@ -56,13 +56,17 @@ print("[INFO] Import Loaded")
 
 def clean_html(saved_name, file_url):
     print("[INFO] Retrieving file: {}".format(saved_name))
-    request = urllib.request.Request(file_url,\
-        headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.167 Safari/537.36'})
+    try:
+        request = urllib.request.Request(file_url,\
+                                         headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.167 Safari/537.36'})
     
-    html_file = urllib.request.urlopen(request).read()
-    soup = BeautifulSoup(html_file, 'lxml')
-    file = soup.find_all("document")[0].get_text()
-    return file
+        html_file = urllib.request.urlopen(request).read()
+        soup = BeautifulSoup(html_file, 'lxml')
+        file = soup.find_all("document")[0].get_text()
+        return file
+    except IOError:
+        print("[WARNING] url error")
+        return None
 
 #    temp_file = codecs.open('../data/raw/' + saved_name + '.txt', 'w', 'utf-8')
 #    temp_file.write(soup)
@@ -163,27 +167,27 @@ def main(beg, end):
             idx = [edgar[i][-1], edgar[i][1], edgar[i][2]]
             text = clean_html(edgar[i][-1] + '-' + edgar[i][2] + '-' + str(edgar[i][1]),\
                        edgar_link + edgar[i][4])
-
-            doc_score = word2vec(text)
-            entries.append(np.concatenate((idx, doc_score)))
+            if text:
+                doc_score = word2vec(text)
+                entries.append(np.concatenate((idx, doc_score)))
             
-            fileind += 1
-            if fileind % 10 == 0:
-                try:
-                    shutil.copy2('../data/backup/autosave.csv','../data/backup/tempread.csv')
-                except:
-                    pass
-                tblsave = pd.DataFrame(entries, columns=attrlist)
-                tblsave.to_csv('../data/backup/autosave.csv',\
+                fileind += 1
+                if fileind % 10 == 0:
+                    try:
+                        shutil.copy2('../data/backup/autosave.csv','../data/backup/tempread.csv')
+                    except:
+                        pass
+                    tblsave = pd.DataFrame(entries, columns=attrlist)
+                    tblsave.to_csv('../data/backup/autosave.csv',\
                                sep=',',encoding='utf-8', mode='w')
-                print('[INFO] Autosaved')
-            if fileind % 50 == 0:
-                tblsave.to_csv('../data/backup/batch{0:0>8}.csv'.format(i),\
-                               sep=',', encoding='utf-8', mode='w')
-                print('[INFO] Saved 100 entries to file batch%s.csv' %i)
-                tblsave = []
-                writeind += 1
-                entries = []
+                    print('[INFO] Autosaved')
+                if fileind % 50 == 0:
+                    tblsave.to_csv('../data/backup/batch{0:0>8}.csv'.format(i),\
+                                   sep=',', encoding='utf-8', mode='w')
+                    print('[INFO] Saved 50 entries to file batch%s.csv' %i)
+                    tblsave = []
+                    writeind += 1
+                    entries = []
                 
     tblsave = pd.DataFrame(entries, columns=attrlist)
     tblsave.to_csv('../data/backup/batch{0:0>8}.csv'.format(i),\
