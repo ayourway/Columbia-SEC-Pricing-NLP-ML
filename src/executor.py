@@ -47,7 +47,7 @@ LM_wl = LM_dict['Word'].tolist()
 try: 
     edgar = pickle.load(open('../data/Edgar.p', 'rb'))
 except FileNotFoundError:
-    edgar = pd.read_csv('../data/Edgar.csv').values
+    edgar = pd.read_csv('../data/Edgar.csv').drop_duplicates().values
     pickle.dump(edgar, open('../data/Edgar.p', 'wb'))
     
 edgar_link = 'https://www.sec.gov/Archives/'
@@ -159,7 +159,7 @@ def main(beg, end):
     fileind = 0
    
     for i in range(beg, end): 
-        if edgar[i][2] in ['10-Q', '10-K', '10-K/A', '10-Q/A']:
+        if edgar[i][2] in ['10-Q', '10-K']:
             idx = [edgar[i][-1], edgar[i][1], edgar[i][2]]
             text = clean_html(edgar[i][-1] + '-' + edgar[i][2] + '-' + str(edgar[i][1]),\
                        edgar_link + edgar[i][4])
@@ -192,9 +192,13 @@ def main(beg, end):
 
            
 if __name__=="__main__":
-    if int(sys.argv[2]) > len(edgar) or int(sys.argv[1]) > len(edgar):
-        print('[WARNING] Maximum Input Value is {}'.format(len(edgar)))
-    main(int(sys.argv[1]),int(sys.argv[2]))
+    if len(sys.argv) <= 1:
+        beg = 0
+        end = len(edgar)
+    else:
+        if int(sys.argv[2]) > len(edgar) or int(sys.argv[1]) > len(edgar):
+            print('[WARNING] Maximum Input Value is {}'.format(len(edgar)))
+    main(beg, end)
     os.system('say Your Program is Done')
 
 
