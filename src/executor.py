@@ -164,6 +164,7 @@ def main(beg, end):
    
     for i in range(beg, end): 
         if edgar[i][2] in ['10-Q', '10-K']:
+            print(i)
             idx = [edgar[i][-1], edgar[i][1], edgar[i][2]]
             text = clean_html(edgar[i][-1] + '-' + edgar[i][2] + '-' + str(edgar[i][1]),\
                        edgar_link + edgar[i][4])
