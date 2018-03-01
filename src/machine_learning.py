@@ -15,7 +15,7 @@ from sklearn.model_selection import cross_val_score, GridSearchCV
 
 # Data processing
 def data_processing():
-    dependencies = pd.read_csv("NLP_cb_NormDoc_diff_table.csv")
+    dependencies = pd.read_csv("../data/combined_matrix.csv")
     dependencies = dependencies.dropna()#axis=0, how = 'all')
     dependencies = dependencies[np.isfinite(dependencies['Negative'])]
     dependencies = dependencies[np.isfinite(dependencies['OneMonth_y'])]

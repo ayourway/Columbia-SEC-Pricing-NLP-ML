@@ -14,9 +14,9 @@ import datetime
 
 #Read DataFrame
 
-compstat_temp = pd.read_csv("./data/Compstat_ThreeTwoOne_Month_Return.csv")
-NLP_diff_temp = pd.read_csv("./data/NLP_cb_NormDoc_NormTic_Diff.csv")
-Industry_temp = pd.read_csv("./data/Industry_3Months_Return.csv",header = None)
+compstat_temp = pd.read_csv("../data/Compstat_ThreeTwoOne_Month_Return.csv")
+NLP_diff_temp = pd.read_csv("../data/NLP_cb_NormDoc_NormTic_Diff.csv")
+Industry_temp = pd.read_csv("../data/Industry_3Months_Return.csv",header = None)
 
 #Change date format; 
 for i in range(len(NLP_diff_temp)):
